@@ -11,3 +11,7 @@ html-ninja.py -e source content outfile -> will encode the payload file 'content
 html-ninja.py -d source outfile -> will try to decrypt white spaces in 'source' file into 'outfile'
 html-ninja.py --check filename -> will check 'filename' for available spaces and spaces needed to embed the file
 ```
+
+## html-ninja.js
+
+This is a very basic function to read hidden data directly from browser, there are a lot of ways you can use this...just use your imagination!
