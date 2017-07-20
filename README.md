@@ -15,3 +15,8 @@ html-ninja.py --check filename -> will check 'filename' for available spaces and
 ## html-ninja.js
 
 This is a very basic function to read hidden data directly from browser, there are a lot of ways you can use this...just use your imagination!
+
+
+## html-ninja.html
+
+This is a PoC to show how it's possible to embed self decrypting data inside html pages. This needs a proper web server to run (not file:///...)
