@@ -69,7 +69,7 @@ def decrypt ( src, dst , f_zlib):
 	print ("Converting and saving to " + dst + " ...")
 	number = int(bits, 2)
 	if f_zlib == 1:
-		result = zlib.decompress(frombits(bits))
+		result = zlib.decompress(frombits(bits), zlib.MAX_WBITS|32)
 	else:
 		result = frombits(bits)
 
