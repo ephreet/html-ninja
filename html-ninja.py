@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys, getopt, os
 import magic
+import requests
 
 def tobits(s):
     result = []
@@ -37,7 +38,16 @@ def decrypt ( src, dst):
 	print ("Reading contents of file " + src + " ...")
 	prevchar="nil"
 	bits=""
-	f = open(src,"r")
+	if src[:4] == "http":
+		r = requests.get(src)
+		f = open("tmp","w")
+		f.write(r.content)
+		f.close()
+		r.close()
+		stegfile = "tmp"
+	else:
+		stegfile = src
+	f = open(stegfile,"r")
 	while True:
 	   c = f.read(1)
 	   if not c:
@@ -57,6 +67,8 @@ def decrypt ( src, dst):
 	outfile.close()
 	m = magic.open(magic.MAGIC_MIME)
 	m.load()
+	if src[:4] == "http":
+		os.remove("tmp")
 	print ("File " + dst + " was written! Contents: " + m.file(dst))
 
 
