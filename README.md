@@ -10,6 +10,7 @@ You can also use it on any text container, but the result will be unformatted te
 html-ninja.py -e source content outfile -> will encode the payload file 'content' into file 'source' and output the result as 'outfile'
 html-ninja.py -d source outfile -> will try to decrypt white spaces in 'source' file into 'outfile'
 html-ninja.py --check filename -> will check 'filename' for available spaces and spaces needed to embed the file
+html-ninja.py -d http://localhost/html-ninja.html stdout -> will get http url and output to stdout
 ```
 
 ## html-ninja.js
