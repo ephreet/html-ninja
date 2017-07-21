@@ -62,14 +62,19 @@ def decrypt ( src, dst):
 	   prevchar=c
 	print ("Converting and saving to " + dst + " ...")
 	number = int(bits, 2)
-	outfile = open(dst,"wb")
-	outfile.write(frombits(bits))
-	outfile.close()
-	m = magic.open(magic.MAGIC_MIME)
-	m.load()
+
+	if dst == "stdout":
+		print("\r\nContents: \r\n\r\n" + frombits(bits))
+	else:
+		outfile = open(dst,"wb")
+		outfile.write(frombits(bits))
+		outfile.close()
+		m = magic.open(magic.MAGIC_MIME)
+		m.load()
+		print ("File " + dst + " was written! Contents: " + m.file(dst))
+
 	if src[:4] == "http":
 		os.remove("tmp")
-	print ("File " + dst + " was written! Contents: " + m.file(dst))
 
 
 def encrypt ( src, content, dst ):
@@ -138,6 +143,7 @@ def usage():
    print "html-ninja.py -e source content outfile -> will encode the payload file 'content' into file 'source' and output the result as 'outfile'"
    print "html-ninja.py -d source outfile -> will try to decrypt white spaces in 'source' file into 'outfile'"
    print "html-ninja.py --check filename -> will check 'filename' for available spaces and spaces needed to embed the file"
+   print "html-ninja.py -d http://localhost/html-ninja.html stdout -> will get http url and output to stdout"
 
 def banner():
    print (" _   _____          _   _   _ _        _    _    \n| |_|_   _| __ ___ | | | \ | (_)_ __  (_)  / \   \n| '_ \| || '_ ` _ \| | |  \| | | '_ \ | | / _ \  \n| | | | || | | | | | | | |\  | | | | || |/ ___ \ \n|_| |_|_||_| |_| |_|_| |_| \_|_|_| |_|/ /_/   \_\ ")
