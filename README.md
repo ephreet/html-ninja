@@ -12,6 +12,7 @@ html-ninja.py -d source outfile -> will try to decrypt white spaces in 'source' 
 html-ninja.py --check filename -> will check 'filename' for available spaces and spaces needed to embed the file
 html-ninja.py -d http://localhost/html-ninja.html stdout -> will get http url and output to stdout
 html-ninja.py -ez / -dz ... -> adds zlib compression to both encryption and decryption
+html-ninja.py -eb / -db ... -> adds bz2 compression to both encryption and decryption
 ```
 
 ## html-ninja.js
