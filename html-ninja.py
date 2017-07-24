@@ -3,6 +3,7 @@ import sys, getopt, os
 import magic
 import requests
 import zlib
+import bz2
 
 def tobits(s):
     result = []
@@ -38,6 +39,11 @@ def checkfile (src):
         req_space = payload_string_compressed.count("")
 	print ("Space required if compressed [zlib]")
 	print (req_space)
+	payload_bits_compressed = tobits(bz2.compress(c))
+        payload_string_compressed = "".join([str(x) for x in payload_bits_compressed] )
+        req_space = payload_string_compressed.count("")
+	print ("Space required if compressed [bz2]")
+	print (req_space)
 
 
 def decrypt ( src, dst , f_zlib):
@@ -70,6 +76,8 @@ def decrypt ( src, dst , f_zlib):
 	number = int(bits, 2)
 	if f_zlib == 1:
 		result = zlib.decompress(frombits(bits), zlib.MAX_WBITS|32)
+	elif f_zlib == 2:
+		result = bz2.decompress(frombits(bits))
 	else:
 		result = frombits(bits)
 
@@ -99,8 +107,10 @@ def encrypt ( src, content, dst, f_zlib ):
 	f = open(content,"r")
 	p = f.read()
 	f.close()
-	if f_zlib == 1:
+	if f_zlib == 1: # use zlib
 		p = zlib.compress(p)
+	if f_zlib == 2: # use bz2
+		p = bz2.compress(p)
 	payload_bits = tobits(p)
 	payload_string = "".join([str(x) for x in payload_bits] )
 	req_space = payload_string.count("")
@@ -157,6 +167,7 @@ def usage():
    print "html-ninja.py --check filename -> will check 'filename' for available spaces and spaces needed to embed the file"
    print "html-ninja.py -d http://localhost/html-ninja.html stdout -> will get http url and output to stdout"
    print "html-ninja.py -ez / -dz ... -> adds zlib compression to both encryption and decryption"
+   print "html-ninja.py -eb / -db ... -> adds bz2 compression to both encryption and decryption"
 
 def banner():
    print (" _   _____          _   _   _ _        _    _    \n| |_|_   _| __ ___ | | | \ | (_)_ __  (_)  / \   \n| '_ \| || '_ ` _ \| | |  \| | | '_ \ | | / _ \  \n| | | | || | | | | | | | |\  | | | | || |/ ___ \ \n|_| |_|_||_| |_| |_|_| |_| \_|_|_| |_|/ /_/   \_\ ")
@@ -176,9 +187,18 @@ def main(argv):
 		encrypt (srcfile, content, outfile, f_zlib)
 	else:
 		usage()
-   elif action == "-ez":
+   elif action == "-ez": # use zlib
 	if len(sys.argv) == 5:
 		f_zlib = 1
+		srcfile = sys.argv[2]
+		content = sys.argv[3]
+		outfile = sys.argv[4]
+		encrypt (srcfile, content, outfile, f_zlib)
+	else:
+		usage()
+   elif action == "-eb": # use bz2
+	if len(sys.argv) == 5:
+		f_zlib = 2
 		srcfile = sys.argv[2]
 		content = sys.argv[3]
 		outfile = sys.argv[4]
@@ -192,9 +212,17 @@ def main(argv):
 		decrypt (srcfile, outfile, f_zlib)
 	else:
 		usage()
-   elif action == "-dz":
+   elif action == "-dz": # use zlib
 	if len(sys.argv) == 4:
 		f_zlib = 1
+		srcfile = sys.argv[2]
+		outfile = sys.argv[3]
+		decrypt (srcfile, outfile, f_zlib)
+	else:
+		usage()
+   elif action == "-db": # use bz2
+	if len(sys.argv) == 4:
+		f_zlib = 2
 		srcfile = sys.argv[2]
 		outfile = sys.argv[3]
 		decrypt (srcfile, outfile, f_zlib)
