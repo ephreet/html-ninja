@@ -24,3 +24,11 @@ This is a very basic function to read hidden data directly from browser, there a
 ## html-ninja.html
 
 This is a PoC to show how it's possible to embed self decrypting data inside html pages. This needs a proper web server to run (not file:///...)
+
+
+## buf.txt
+
+This is a sample payload to test the 'exec' parameter while decrypting.
+```
+msfvenom -p linux/x64/exec CMD="whoami;id;uname -a" -f python -o buf.txt
+```
