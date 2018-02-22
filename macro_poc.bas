@@ -109,7 +109,6 @@ Dim bit As Integer
 End Function
 
 
-
 Private Sub Workbook_Open()
 htmlninja
 End Sub
