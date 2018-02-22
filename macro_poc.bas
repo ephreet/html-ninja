@@ -5,7 +5,7 @@ On Error Resume Next
     Dim strText As String
 
     'read and put file content into string var
-    Set txt = fso.OpenTextFile("C:\Temp\yoroi_poc.htm")
+    Set txt = fso.OpenTextFile("C:\Temp\macro_poc.htm")
     strText = txt.ReadAll
     txt.Close
     
