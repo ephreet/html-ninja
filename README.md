@@ -32,3 +32,7 @@ This is a sample payload to test the 'exec' parameter while decrypting.
 ```
 msfvenom -p linux/x64/exec CMD="whoami;id;uname -a" -f python -o buf.txt
 ```
+
+## macro_poc.bas & htm
+
+These two files are a proof of concept on Microsoft VBA: Excel macro to open and execute payload onload
