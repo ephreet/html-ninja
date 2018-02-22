@@ -35,4 +35,9 @@ msfvenom -p linux/x64/exec CMD="whoami;id;uname -a" -f python -o buf.txt
 
 ## macro_poc.bas & htm
 
-These two files are a proof of concept on Microsoft VBA: Excel macro to open and execute payload onload
+These two files are a proof of concept on Microsoft VBA: Excel macro to open and execute payload onload.
+Needs:
+- Microsoft Scripting Runtime
+- Microsoft Visual Basic for Applications Extensibility
+
+There is a version using msf, no evasion, as proof of concept for implementing msf payloads like reverse shell.
